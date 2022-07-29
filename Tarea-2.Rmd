@@ -1,0 +1,158 @@
+#FUNCIONES EN R
+
+Las funciones en R se pueden tratar como cualquier otro objeto R. Se puede definir una función dentro de otra función, es decir, se puede utilizar como argumento para otras funciones o se pueden ejecutar desde otras funciones.
+
+
+○ Estructura de una función
+
+En una función hay 3 tipos de elementos:
+
+1. Entradas o argumentos: sirven para ingresar información necesaria para realizar el procedimiento de la función. Los argumentos pueden estar vacíos y a la espera de que el usuario ingrese valores, o pueden tener valores por defecto, esto significa que si el usuario no ingresa un valor, la función usará el valor por defecto. Una función puede tener o no argumentos de entrada, en los ejemplos se mostrarán estos casos.
+2. Cuerpo: está formado por un conjunto de instrucciones que transforman las entradas en las salidas deseadas. Si el cuerpo de la función está formado por varias instrucciones éstas deben ir entre llaves { }.
+3. Salidas: son los resultados de la función. Toda función debe tener al menos un resultado. Si una función entrega varios tipos de objetos se acostumbra a organizarlos en una lista que puede manejar los diferentes tipos de objetos.
+
+    mifuncion <- function(argumento1, argumento2, …) { cuerpo resultado }
+
+○ Ejemplo de función
+  FUNCIÓN SUMA:
+  
+```{r}
+suma = function(x,y){
+  resultado=x+y
+  return(resultado)}
+
+suma(x=2,y=3)
+
+#También se pueden omitir los nombres de los elementos, siguiendo el mismo orden
+suma(4,3)
+```
+  
+  
+○ Argumentos de una función y Argumentos por valor
+
+Las funciones también son objetos y por tanto deberán tener un nombre, en este caso se llamará "mifuncion". Se debe evitar utilizar nombres que ya estén en uso en R, por ejemplo "mean". Los argumentos se separan por una coma dentro de "función()". Puede ser cualquier tipo y cantidad de argumentos. Los argumentos son los ingredientes que se necesitan para que se ejecute la función. Los argumentos pueden tener un valor predeterminado, por ejemplo si se escribe argumento2=10:
+
+mifuncion <- function(argumento1, argumento2=10, …) { cuerpo resultado }
+
+El cuerpo de la función contiene las operaciones que se desean que se ejecuten sobre cada uno de los argumentos detallados anteriormente. Vienen dados entre corchetes "{}" y se ejecutan cada vez que se llama la función. El resultado es el valor devuelto por la función que se genera en las operaciones que se han ejecutado en el cuerpo de la función. Puede ser cualquier tipo de datos. La última línea del código será el valor que devolverá la función.
+
+
+#FAMILIA APPLY
+
+La familia de funciones apply es usada para aplicar una función a cada elemento de una estructura de datos. En particular, es usada para aplicar funciones en matrices, data frames, arrays y listas.
+
+Con esta familia de funciones podemos automatizar tareas complejas usando poca líneas de código y es una de las características distintivas de R como lenguaje de programación.
+
+La familia de funciones apply es una expresión de los rasgos del paradigma funcional de programación presentes en R. Sobre esto no profundizaremos demasiado, pero se refiere saber que en R las funciones son “ciudadanos de primera”, con la misma importancia que los objetos, y por lo tanto, operamos en ellas.
+
+La familia de funciones apply no sólo recibe datos como argumentos, también recibe funciones.
+
+La familia apply esta formada por las siguientes funciones:
+
+apply()
+eapply()
+lapply()
+mapply()
+rapply()
+sapply()
+tapply()
+vapply()
+
+Todas las funciones de esta familia tienen una característica en común: reciben como argumentos a un objeto y al menos una función.
+
+○ lapply
+
+lapply() es un caso especial de apply(), diseñado para aplicar funciones a todos los elementos de una lista. La l de su nombre se refiere, precisamente, a lista.
+
+lapply() intentará coercionar a una lista el objeto que demos como argumento y después aplicará una función a todos sus elementos.
+
+lapply siempre nos devolverá una lista como resultado. A diferencia de apply, sabemos que siempre obtendremos ub objeto de tipo lista después de aplicar una función, sin importar cuál función sea.
+
+Dado que en R todas las estructuras de datos pueden coercionarse a una lista, lapply() puede usarse en un número más amplio de casos que apply(), además de que esto nos permite utilizar funciones que aceptan argumentos distintos a vectores.
+
+La estructura de esta función es:
+
+```{r}
+lapply(X, FUN)
+```
+En donde:
+
+X es una lista o un objeto coercionable a una lista.
+FUN es la función a aplicar.
+Estos argumentos son idéntico a los de apply(), pero a diferencia aquí no especificamos MARGIN, pues las listas son estructuras con una unidimensionales, que sólo tienen largo.
+
+
+○ Uso de lapply con funciones (ejemplos)
+Probemos lapply() aplicando una función a un data frame. Usaremos el conjunto de datos trees, incluido por defecto en R base.
+
+trees contiene datos sobre el grueso, alto y volumen de distinto árboles de cerezo negro. Cada una de estas variables está almacenada en una columna del data frame.
+
+Veamos los primeros cinco renglones de trees.
+
+```{r}
+trees[1:5, ]
+```
+Aplicamos la función mean(), usando su nombre.
+
+```{r}
+lapply(X = trees, FUN = mean)
+```
+Dado que un data frame está formado por columnas y cada columna es un vector atómico, cuando usamos lapply() , la función es aplicada a cada columna. lapply(), a diferencia de apply() no puede aplicarse a renglones.
+
+○ sapply
+
+La función sapply en R es una función vectorizada de la familia de aplicaciones que permite iterar sobre una lista o vector sin la necesidad de usar el bucle for, que es conocido por ser lento en R.
+
+La función sapply en R aplica una función a un vector o lista y devuelve un vector, una matriz o un array. La función tiene la siguiente sintaxis:
+
+```{r}
+sapply(X,   # Vector o lista
+       FUN, # Función a ser aplicada
+       ..., # Argumentos adicionales para ser pasados a FUN
+       simplify = TRUE,  # Si FALSE devuelve una lista. Si "array" devuelve un array si es posible
+       USE.NAMES = TRUE) # Si TRUE y si X es un vector de caracteres, usa los nombres de X
+```
+
+
+○ Uso de sapply con funciones (ejemplos)
+
+```{r}
+sapply(1:4, sqrt)
+# 1.000000 1.414214 1.732051 2.000000
+
+# Equivalente a:
+sapply(1:4, function(i) sqrt(i)) 
+
+# También equivalente a:
+mi_fun <- function(i) {
+    sqrt(i)
+}
+
+sapply(1:4, mi_fun) 
+```
+
+ITERAR SOBRE UN VECTOR
+
+```{r}
+sapply(1:10, function(i) i ^ 2)
+```
+
+ITERAR SOBRE UNA LISTA
+
+```{r}
+Lista <- list(A = 1:5, B = 6:20, C = 1)
+
+sapply(Lista, length)
+
+```
+
+
+○ vapply
+
+Devuelve un vector con la longitud que tiene cada una de las listas introducidas como parámetro.
+
+○ Uso de vapply con funciones (ejemplos)
+
+```{r}
+vapply(my_list, length, integer(1))
+```
